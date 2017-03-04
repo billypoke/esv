@@ -30,6 +30,12 @@ pre {
     margin: 0;
 }
 
+@media screen and (max-width: 330px) {
+    #banner h2 {
+        line-height: 100px;
+    }
+}
+
 a {
     text-decoration: none !important;
 }

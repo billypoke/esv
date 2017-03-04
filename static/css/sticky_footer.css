@@ -19,3 +19,21 @@ body {
     line-height: 60px;
     text-align: center;
 }
+
+@media screen and (max-width: 1000px){
+    .footer {
+        line-height: 30px;
+    }
+}
+
+@media screen and (max-width: 500px){
+    .footer {
+        height: 90px;
+    }
+}
+
+@media screen and (max-width: 350px){
+    .footer {
+        height: 120px;
+    }
+}
