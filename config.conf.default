@@ -1,0 +1,7 @@
+EVE_OAUTH_USER_AGENT: ''
+EVE_OAUTH_CLIENT_ID: ''
+EVE_OAUTH_SECRET: ''
+EVE_OAUTH_CALLBACK: ''
+EVE_OAUTH_SCOPE: 'publicData esi-skills.read_skills.v1'
+
+SECRET_KEY: ''
