@@ -22,6 +22,6 @@ Python 3.x is required.
 5. For 'Connection Type', choose `Authentication & API Access`
 6. The required scopes are listed in `config.conf.deafult` but are `publicData` & `esi-skills.read_skills.v1`
 7. The Callback URL is where the SSO system will redirect your users after authentication. It should end in 
-`/statschecker/view` for this application
+`/esv/view` for this application
 8. Copy the information for your app into `config.conf`
 9. Run `python wsgi.py`

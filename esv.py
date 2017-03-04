@@ -21,14 +21,14 @@ preston = Preston(
 )
 
 
-@application.route('/statschecker')
-@application.route('/statschecker/')
+@application.route('/esv')
+@application.route('/esv/')
 def landing():
     return render_template('view.html', show_crest=True, crest_url=preston.get_authorize_url())
 
 
-@application.route('/statschecker/view')
-@application.route('/statschecker/view/<refresh_token>')
+@application.route('/esv/view')
+@application.route('/esv/view/<refresh_token>')
 def view_pilot(refresh_token=None):
     try:
         if refresh_token is None:

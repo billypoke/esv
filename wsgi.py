@@ -1,4 +1,4 @@
-from statschecker import application
+from esv import application
 
 if __name__ == "__main__":
     application.run()
