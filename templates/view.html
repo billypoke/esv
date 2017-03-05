@@ -20,54 +20,58 @@
 </script>
 
 {% if show_crest %}
-  <div class="row hidden-md hidden-lg hidden-sm">
-    <div id="login" class="col-xs-12">
-      <a href="{{ crest_url }}">
-        <img src="/static/images/sso_black.png" alt="Click here to log in">
-      </a>
+  <div class="row" id="faq">
+    <div class="row hidden-md hidden-lg hidden-sm">
+      <div id="login" class="col-xs-12">
+        <a href="{{ crest_url }}">
+          <img src="/static/images/sso_black.png" alt="Click here to log in">
+        </a>
+      </div>
     </div>
-  </div>
-  <div class="row hidden-md hidden-lg hidden-sm">
-    <div class="col-xs-12">
-      <h3>FAQ</h3>
+    <div class="row hidden-md hidden-lg hidden-sm">
+      <div class="col-xs-12">
+        <h3>FAQ</h3>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-12">
-      <h4>What is this?</h4>
-      <p>A web app to view your skills, grouped into useful categories. See where you have good coverage, and where you
-      need to train your skills.</p>
+    <div class="row">
+      <div class="col-xs-12">
+        <h4>What is this?</h4>
+        <p>A web app to view your skills, grouped into useful categories. See where you have good coverage, and where
+          you
+          need to train your skills.</p>
+      </div>
+      <div class="col-xs-12">
+        <h4>How does it work?</h4>
+        <p>Using <a href="https://community.eveonline.com/news/dev-blogs/eve-online-sso-and-what-you-need-to-know/">EVE's
+          SSO</a> (Single Sign On) system and the new <a href="https://esi.tech.ccp.is/latest/">ESI API</a>. You are
+          guaranteed to be going to CCP's server for authentication, and you can see exactly what permissions you are
+          granting to this application.</p>
+      </div>
+      <div class="col-xs-12">
+        <h4>I don't trust you?</h4>
+        <p>Feel free to <a href="https://github.com/billypoke/esv" target="_blank">check out the code</a> on
+          GitHub. I don't store your
+          <a href="http://eveonline-third-party-documentation.readthedocs.io/en/latest/sso/refreshtokens.html"
+             target="_blank">
+            refresh token
+          </a>. This means I will not have access to your info after you leave the site. That being said, I encourage
+          you
+          to check your authorized
+          <a href="https://community.eveonline.com/support/third-party-applications/" target="_blank">
+            Third Party Applications
+          </a> and make sure that there are none that you are not currently using.</p>
+      </div>
+      <div class="col-xs-12">
+        <h4>Let's do this!</h4>
+        <p>Click the button below to get started.</p>
+      </div>
     </div>
-    <div class="col-xs-12">
-      <h4>How does it work?</h4>
-      <p>Using <a href="https://community.eveonline.com/news/dev-blogs/eve-online-sso-and-what-you-need-to-know/">EVE's
-        SSO</a> (Single Sign On) system and the new <a href="https://esi.tech.ccp.is/latest/">ESI API</a>. You are
-        guaranteed to be going to CCP's server for authentication, and you can see exactly what permissions you are
-        granting to this application.</p>
-    </div>
-    <div class="col-xs-12">
-      <h4>I don't trust you?</h4>
-      <p>Feel free to <a href="https://github.com/billypoke/esv" target="_blank">check out the code</a> on
-        GitHub. I don't store your
-        <a href="http://eveonline-third-party-documentation.readthedocs.io/en/latest/sso/refreshtokens.html"
-           target="_blank">
-          refresh token
-        </a>. This means I will not have access to your info after you leave the site. That being said, I encourage you
-        to check your authorized
-        <a href="https://community.eveonline.com/support/third-party-applications/" target="_blank">
-          Third Party Applications
-        </a> and make sure that there are none that you are not currently using.</p>
-    </div>
-    <div class="col-xs-12">
-      <h4>Let's do this!</h4>
-      <p>Click the button below to get started.</p>
-    </div>
-  </div>
-  <div class="row">
-    <div id="login" class="col-xs-12">
-      <a href="{{ crest_url }}">
-        <img src="/static/images/sso_black.png" alt="Click here to log in">
-      </a>
+    <div class="row">
+      <div id="login" class="col-xs-12">
+        <a href="{{ crest_url }}">
+          <img src="/static/images/sso_black.png" alt="Click here to log in">
+        </a>
+      </div>
     </div>
   </div>
 {% else %}
@@ -81,7 +85,7 @@
     </h4>
     <hr>
     <div class="row">
-      <div class="col-sm-4 col-md-3">
+      <div class="col-xl-2 col-sm-4 col-md-3">
         <nav class="nav">
           <div class="navbar-header">
             <button type="button" class="btn btn-primary navbar-toggle active" data-toggle="collapse"
@@ -129,10 +133,10 @@
         </nav>
       </div>
 
-      <div id="breakdown" class="col-md-9 col-sm-8 col-xs-12">
+      <div id="breakdown" class="col-xl-10 col-md-9 col-sm-8 col-xs-12">
         <div class="row">
 
-          <div class="col-md-3 col-sm-4 col-xs-6">
+          <div class="col-xl-1 col-md-3 col-sm-4 col-xs-6">
             <h4>Ships</h4>
 
             {% for ship_type in ['Battleship', 'Battlecruiser', 'Cruiser', 'Destroyer', 'Frigate'] %}
@@ -146,7 +150,7 @@
             {% endfor %}
           </div>
 
-          <div class="col-md-3 col-sm-4 col-xs-6">
+          <div class="col-xl-2 col-md-3 col-sm-4 col-xs-6">
             <h4>Weapons</h4>
 
             <h5>Gunnery</h5>
@@ -179,7 +183,7 @@
             <hr>
           </div>
 
-          <div class="col-md-3 col-sm-4 col-xs-6">
+          <div class="col-xl-2 col-md-3 col-sm-4 col-xs-6">
             <h4>Scanning</h4>
             {% for skill, level in skills['Scanning']|dictsort %}
               <span class="lbl">{{ skill }}</span> <span class="pull-right">{{ level }}</span><br>
@@ -192,7 +196,7 @@
             {% endfor %}
           </div>
 
-          <div class="col-md-3 col-sm-4 col-xs-6">
+          <div class="col-xl-2 col-md-3 col-sm-4 col-xs-6">
             <h4>Misc. Skills</h4>
 
             <h5>Fitting</h5>
@@ -221,10 +225,8 @@
             {% endfor %}
             <hr>
           </div>
-        </div>
-        <hr>
-        <div class="row">
-          <div class="col-md-3 col-sm-4 col-xs-6">
+
+          <div class="col-xl-2 col-md-3 col-sm-4 col-xs-6">
             <h4>Advanced Ships</h4>
 
             <h5>Battleship</h5>
@@ -295,7 +297,7 @@
             <hr>
           </div>
 
-          <div class="col-md-3 col-sm-4 col-xs-6">
+          <div class="col-xl-1 col-md-3 col-sm-4 col-xs-6">
             <h4>Advanced Weapons</h4>
             <h5>Gunnery Spec.</h5>
             {% for size in ['Small', 'Medium', 'Large'] %}
@@ -328,7 +330,7 @@
             <hr>
           </div>
 
-          <div class="col-md-3 col-sm-4 col-xs-6">
+          <div class="col-xl-2 col-md-3 col-sm-4 col-xs-6">
             <h4>Capital/Jump</h4>
             <h5>Jump Skills</h5>
             {% for type in ['Cynosural Field Theory', 'Jump Drive Calibration', 'Jump Drive Operation', 'Jump Fuel Conservation'] %}

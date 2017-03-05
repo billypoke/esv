@@ -22,6 +22,36 @@ pre {
     background: url(../images/header.jpg) no-repeat;
 }
 
+#content {
+    margin-top: 210px;
+}
+
+@media screen and (min-width: 1600px) {
+    #banner {
+        position: relative;
+        /*width: 1540px;*/
+        width: 1714px;
+        padding-left: 15px;
+        padding-right: 15px;
+        margin-bottom: 20px;
+        background-position: center;
+    }
+
+    #content {
+        margin-top: auto;
+    }
+
+    .alert {
+        max-width: 1714px;
+        margin: 0 auto;
+    }
+
+    #faq {
+        max-width: 1714px;
+        margin: 0 auto;
+    }
+}
+
 #banner h2 {
     height: 100%;
     text-align: center;
@@ -42,10 +72,6 @@ a {
 
 #banner a, #banner a:hover {
     color: #fff;
-}
-
-#content {
-    margin-top: 210px;
 }
 
 #login {
