@@ -182,9 +182,14 @@
           <div class="col-md-3 col-sm-4 col-xs-6">
             <h4>Scanning</h4>
             {% for skill, level in skills['Scanning']|dictsort %}
-              <span class="lbl">{{ skill }}</span> <span class="pull-right">{{ skills['Scanning'][skill] }}</span><br>
+              <span class="lbl">{{ skill }}</span> <span class="pull-right">{{ level }}</span><br>
             {% endfor %}
             <hr>
+
+            <h4>Clones/Drugs</h4>
+            {% for skill, level in skills['Neural Enhancement']|dictsort %}
+              <span class="lbl">{{ skill }}</span> <span class="pull-right">{{ level }}</span><br>
+            {% endfor %}
           </div>
 
           <div class="col-md-3 col-sm-4 col-xs-6">
