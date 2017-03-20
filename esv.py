@@ -52,7 +52,6 @@ def view_pilot(refresh_token=None):
             pilot_name = pilot_info['CharacterName']
             pilot_id = pilot_info['CharacterID']
 
-            flash('Logged in as: ' + pilot_name, 'success')
             skill_groups = json.load(open('static/json/skill_groups.json', 'r'))
 
             skills_dict = {}
