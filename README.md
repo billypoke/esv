@@ -2,8 +2,7 @@
 
 ## What is this?
 
-A web app to view your skills, grouped into useful categories. See where you have good coverage, and where you need to 
-train your skills.
+A web app for the game EVE Online to view your skills, grouped into useful categories. See where you have good coverage, and where you need to train your skills.
 
 ## How does it work?
 
@@ -20,7 +19,7 @@ Python 3.x is required.
 3. Go to https://developers.eveonline.com/ and create a new application
 4. Choose a name and write a description
 5. For 'Connection Type', choose `Authentication & API Access`
-6. The required scopes are listed in `config.conf.deafult` but are `publicData` & `esi-skills.read_skills.v1`
+6. The required scopes are listed in `config.conf.default` but are `publicData` & `esi-skills.read_skills.v1`
 7. The Callback URL is where the SSO system will redirect your users after authentication. It should end in 
 `/esv/view` for this application
 8. Copy the information for your app into `config.conf`
