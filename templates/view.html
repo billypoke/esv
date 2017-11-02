@@ -153,26 +153,31 @@
           <div class="col-xl-2 col-md-3 col-sm-4 col-xs-6">
             <h4>Weapons</h4>
 
-            <h5>Gunnery</h5>
-            {% for size in ['Small', 'Medium', 'Large'] %}
-              {% for type in ['Energy Turret', 'Hybrid Turret', 'Projectile Turret'] %}
-                <span class="lbl">{{ size+' '+type }}</span>
-                <span class="pull-right">{{ skills['Gunnery'][size+' '+type] }}</span><br>
+            {% if 'Gunnery' in skills %}
+              <h5>Gunnery</h5>
+              {% for size in ['Small', 'Medium', 'Large'] %}
+                {% for type in ['Energy Turret', 'Hybrid Turret', 'Projectile Turret'] %}
+                  <span class="lbl">{{ size+' '+type }}</span>
+                  <span class="pull-right">{{ skills['Gunnery'][size+' '+type] }}</span><br>
+                {% endfor %}
+                <hr>
+              {% endfor %}
+            {% endif %}
+
+            {% if 'Missiles' in skills %}
+              <h5>Missiles</h5>
+              {% for size in ['Rockets', 'Heavy Assault Missiles', 'Torpedoes'] %}
+                <span class="lbl">{{ size }}</span> <span class="pull-right">{{ skills['Missiles'][size] }}</span><br>
               {% endfor %}
               <hr>
-            {% endfor %}
 
-            <h5>Missiles</h5>
-            {% for size in ['Rockets', 'Heavy Assault Missiles', 'Torpedoes'] %}
-              <span class="lbl">{{ size }}</span> <span class="pull-right">{{ skills['Missiles'][size] }}</span><br>
-            {% endfor %}
-            <hr>
 
-            {% for size in ['Light', 'Heavy', 'Cruise'] %}
-              <span class="lbl">{{ size+' Missiles' }}</span>
-              <span class="pull-right">{{ skills['Missiles'][size+' Missiles'] }}</span><br>
-            {% endfor %}
-            <hr>
+              {% for size in ['Light', 'Heavy', 'Cruise'] %}
+                <span class="lbl">{{ size+' Missiles' }}</span>
+                <span class="pull-right">{{ skills['Missiles'][size+' Missiles'] }}</span><br>
+              {% endfor %}
+              <hr>
+            {% endif %}
 
             <h5>Drone Operation</h5>
             {% for size in ['Light', 'Medium', 'Heavy'] %}
@@ -213,17 +218,21 @@
             {% endfor %}
             <hr>
 
-            <h5>Turret Support</h5>
-            {% for skill in ['Controlled Bursts', 'Gunnery', 'Motion Prediction', 'Rapid Firing', 'Sharpshooter', 'Surgical Strike', 'Trajectory Analysis'] %}
-              <span class="lbl">{{ skill }}</span> <span class="pull-right">{{ skills['Gunnery'][skill] }}</span><br>
-            {% endfor %}
-            <hr>
+            {% if 'Gunnery' in skills %}
+              <h5>Turret Support</h5>
+              {% for skill in ['Controlled Bursts', 'Gunnery', 'Motion Prediction', 'Rapid Firing', 'Sharpshooter', 'Surgical Strike', 'Trajectory Analysis'] %}
+                <span class="lbl">{{ skill }}</span> <span class="pull-right">{{ skills['Gunnery'][skill] }}</span><br>
+              {% endfor %}
+              <hr>
+            {% endif %}
 
-            <h5>Missile Support</h5>
-            {% for skill in ['Guided Missile Precision', 'Missile Bombardment', 'Missile Launcher Operation', 'Missile Projection', 'Rapid Launch', 'Target Navigation Prediction', 'Warhead Upgrades'] %}
-              <span class="lbl">{{ skill }}</span> <span class="pull-right">{{ skills['Missiles'][skill] }}</span><br>
-            {% endfor %}
-            <hr>
+            {% if 'Missiles' in skills %}
+              <h5>Missile Support</h5>
+              {% for skill in ['Guided Missile Precision', 'Missile Bombardment', 'Missile Launcher Operation', 'Missile Projection', 'Rapid Launch', 'Target Navigation Prediction', 'Warhead Upgrades'] %}
+                <span class="lbl">{{ skill }}</span> <span class="pull-right">{{ skills['Missiles'][skill] }}</span><br>
+              {% endfor %}
+              <hr>
+            {% endif %}
           </div>
 
           <div class="col-xl-2 col-md-3 col-sm-4 col-xs-6">
@@ -257,7 +266,8 @@
               <a class="pop"
                   {% if skills['Subsystems'] is defined %}
                  data-content="<pre>
-{% for subsystem in ['Offensive', 'Defensive', 'Propulsion', 'Electronic', 'Engineering'] %}{{ race+' '+subsystem }} Systems: {{ skills['Subsystems'][race+' '+subsystem+' Systems'] }}
+
+                     {% for subsystem in ['Offensive', 'Defensive', 'Propulsion', 'Core'] %}{{ race+' '+subsystem }} Systems: {{ skills['Subsystems'][race+' '+subsystem+' Systems'] }}
 {% endfor %}</pre>"{% endif %}>
                 <span class="lbl">{{ race }}</span>
               </a>
@@ -299,29 +309,35 @@
 
           <div class="col-xl-1 col-md-3 col-sm-4 col-xs-6">
             <h4>Advanced Weapons</h4>
-            <h5>Gunnery Spec.</h5>
-            {% for size in ['Small', 'Medium', 'Large'] %}
-              <h6>{{ size }}</h6>
-              {% for type in ['Pulse Laser', 'Beam Laser'] %}
-                <span class="lbl">{{ type }}</span>
-                <span class="pull-right">{{ skills['Gunnery'][size+' '+type+' Specialization'] }}</span><br>
+
+            {% if 'Gunnery' in skills %}
+              <h5>Gunnery Spec.</h5>
+              {% for size in ['Small', 'Medium', 'Large'] %}
+                <h6>{{ size }}</h6>
+                {% for type in ['Pulse Laser', 'Beam Laser'] %}
+                  <span class="lbl">{{ type }}</span>
+                  <span class="pull-right">{{ skills['Gunnery'][size+' '+type+' Specialization'] }}</span><br>
+                {% endfor %}
+                {% for type in ['Blaster', 'Railgun'] %}
+                  <span class="lbl">{{ type }}</span>
+                  <span class="pull-right">{{ skills['Gunnery'][size+' '+type+' Specialization'] }}</span><br>
+                {% endfor %}
+                {% for type in ['Autocannon', 'Artillery'] %}
+                  <span class="lbl">{{ type }}</span>
+                  <span class="pull-right">{{ skills['Gunnery'][size+' '+type+' Specialization'] }}</span><br>
+                {% endfor %}
+                <hr>
               {% endfor %}
-              {% for type in ['Blaster', 'Railgun'] %}
+            {% endif %}
+
+            {% if 'Missile' in skills %}
+              <h5>Missile Spec.</h5>
+              {% for type in ['Rocket', 'Light Missile', 'Heavy Assault Missile', 'Heavy Missile', 'Torpedo', 'Cruise Missile'] %}
                 <span class="lbl">{{ type }}</span>
-                <span class="pull-right">{{ skills['Gunnery'][size+' '+type+' Specialization'] }}</span><br>
-              {% endfor %}
-              {% for type in ['Autocannon', 'Artillery'] %}
-                <span class="lbl">{{ type }}</span>
-                <span class="pull-right">{{ skills['Gunnery'][size+' '+type+' Specialization'] }}</span><br>
+                <span class="pull-right">{{ skills['Missiles'][type+' Specialization'] }}</span><br>
               {% endfor %}
               <hr>
-            {% endfor %}
-            <h5>Missile Spec.</h5>
-            {% for type in ['Rocket', 'Light Missile', 'Heavy Assault Missile', 'Heavy Missile', 'Torpedo', 'Cruise Missile'] %}
-              <span class="lbl">{{ type }}</span>
-              <span class="pull-right">{{ skills['Missiles'][type+' Specialization'] }}</span><br>
-            {% endfor %}
-            <hr>
+            {% endif %}
             <h5>Drone Spec.</h5>
             {% for type in ['Amarr', 'Caldari', 'Gallente', 'Minmatar'] %}
               <span class="lbl">{{ type }}</span>
@@ -332,11 +348,13 @@
 
           <div class="col-xl-2 col-md-3 col-sm-4 col-xs-6">
             <h4>Capital/Jump</h4>
+
             <h5>Jump Skills</h5>
             {% for type in ['Cynosural Field Theory', 'Jump Drive Calibration', 'Jump Drive Operation', 'Jump Fuel Conservation'] %}
               <span class="lbl">{{ type }}</span> <span class="pull-right">{{ skills['Navigation'][type] }}</span><br>
             {% endfor %}
             <hr>
+
             <h5>Capital Ships</h5>
             <span class="lbl">Advanced Spaceship Command</span> <span
               class="pull-right">{{ skills['Spaceship Command']['Advanced Spaceship Command'] }}</span><br>
