@@ -25,7 +25,8 @@ preston = Preston(
 @application.route('/esv')
 @application.route('/esv/')
 def landing():
-    return render_template('view.html', show_crest=True, crest_url=preston.get_authorize_url())
+    return render_template('dist/view.html', show_crest=True, crest_url=preston.get_authorize_url(), network_time=0,
+                           parse_time=0)
 
 
 @application.route('/esv/view')
@@ -121,7 +122,7 @@ def view_pilot(refresh_token=None):
         print('Skill Parse error: ' + str(e))
         return redirect(url_for('landing'))
 
-    return render_template('view.html', show_crest=False, pilot_name=pilot_name, pilot_id=pilot_id, skills=skills_dict,
+    return render_template('dist/view.html', show_crest=False, pilot_name=pilot_name, pilot_id=pilot_id, skills=skills_dict,
                            skills_stats=skills_stats, network_time=network_time, parse_time=parse_time)
 
 

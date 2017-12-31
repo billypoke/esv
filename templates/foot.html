@@ -9,5 +9,30 @@
         ESI - {{ "{:.3f}".format(network_time) }} sec / Parse - {{ "{:.3f}".format(parse_time) }} sec
     </div>
 </footer>
+<!-- jQuery -->
+<script type="text/javascript" src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.pop').popover({
+            html: true,
+            trigger: "hover"
+        });
+
+        $('#breakdown').find('.pull-right').each(function () {
+            var level = parseInt($(this).html());
+            if (!isNaN(level)) {
+                $(this).addClass('level l' + level);
+            } else {
+                $(this).addClass('level notinjected');
+                $(this).html("X")
+            }
+        });
+    })
+</script>
 </body>
 </html>

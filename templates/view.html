@@ -1,24 +1,5 @@
 {% include "head.html" %}
 
-<script type="text/javascript">
-    $(function () {
-        $('.pop').popover({
-            html: true,
-            trigger: "hover"
-        });
-
-        $('#breakdown').find('.pull-right').each(function () {
-            var level = parseInt($(this).html());
-            if (!isNaN(level)) {
-                $(this).addClass('level l' + level);
-            } else {
-                $(this).addClass('level notinjected');
-                $(this).html("X")
-            }
-        });
-    })
-</script>
-
 {% if show_crest %}
     <div class="row" id="faq">
         <div class="row hidden-md hidden-lg hidden-sm">
