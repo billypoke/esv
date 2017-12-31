@@ -1,6 +1,7 @@
 import json
 
 import requests
+import time
 import yaml
 from flask import Flask, render_template, flash, request, redirect, url_for
 from preston.esi import Preston
@@ -47,6 +48,7 @@ def view_pilot(refresh_token=None):
             return redirect(url_for('view_pilot', refresh_token=auth.refresh_token))
 
         else:
+            t0 = time.time()
             auth = preston.use_refresh_token(refresh_token)
             pilot_info = auth.whoami()
             pilot_name = pilot_info['CharacterName']
@@ -65,7 +67,7 @@ def view_pilot(refresh_token=None):
 
             skills = result['skills']
 
-            # Prepare and get names form the skill ids
+            # Prepare and get names from the skill ids
             ids_list = []
             for skill in skills:
                 ids_list.append(skill.get('skill_id'))
@@ -77,6 +79,12 @@ def view_pilot(refresh_token=None):
                 flash('There was an error in EVE\'s response', 'error')
                 print('SSO callback exception: ' + str(e))
                 return redirect(url_for('landing'))
+
+            t1 = time.time()
+
+            network_time = t1 - t0
+
+            t0 = time.time()
 
             skills_stats['Totals'] = {}
             skills_stats['Totals']['num_skills'] = len(skills)
@@ -104,13 +112,17 @@ def view_pilot(refresh_token=None):
                         skills_stats[group]['sp_in_group'] += skill['skillpoints_in_skill']
                         skills_stats['Totals']['total_sp'] += skill['skillpoints_in_skill']
 
+            t1 = time.time()
+
+            parse_time = t1 - t0
+
     except Exception as e:
         flash('There was an error parsing skills', 'error')
         print('Skill Parse error: ' + str(e))
         return redirect(url_for('landing'))
 
     return render_template('view.html', show_crest=False, pilot_name=pilot_name, pilot_id=pilot_id, skills=skills_dict,
-                           skills_stats=skills_stats)
+                           skills_stats=skills_stats, network_time=network_time, parse_time=parse_time)
 
 
 if __name__ == "__main__":

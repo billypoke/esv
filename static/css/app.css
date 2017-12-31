@@ -29,12 +29,9 @@ pre {
 @media screen and (min-width: 1600px) {
     #banner {
         position: relative;
-        /*width: 1540px;*/
-        width: 1714px;
         padding-left: 15px;
         padding-right: 15px;
         margin-bottom: 20px;
-        background-position: center;
     }
 
     #content {
