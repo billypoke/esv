@@ -1,0 +1,14 @@
+<div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="row">
+
+        <div class="col-xs-12">
+            <h4>Clones/Drugs</h4>
+        </div>
+        {% for skill, level in skills['Neural Enhancement']|dictsort %}
+            <div class="col-xs-12">
+                <span class="lbl">{{ skill }}</span> <span class="pull-right">{{ level }}</span><br>
+            </div>
+        {% endfor %}
+    </div>
+    <hr class="hidden-md hidden-lg hidden-xl">
+</div>

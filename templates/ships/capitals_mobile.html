@@ -1,0 +1,18 @@
+<!-- L Screen Capitals -->
+<div class="row hidden-xs hidden-sm hidden-md hidden-xl">
+    <div class="col-xs-12">
+        <h4>Capital/Jump</h4>
+        {% include "ships/capitals.html" %}
+    </div>
+</div>
+
+<div class="row panel panel-default hidden-lg hidden-xl">
+    <div class="panel-heading" data-toggle="collapse" data-target="#capitals_mobile">
+        <h4 class="panel-title"><span>Capitals & Jump</span></h4>
+    </div>
+    <div id="capitals_mobile" class="panel-collapse collapse in">
+        <div class="panel-body">
+            {% include "ships/capitals.html" %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+<div class="col-xl-2 col-sm-4 col-md-3">
+    <nav class="nav">
+        <div class="navbar-header">
+            <button type="button" class="btn btn-primary navbar-toggle active" data-toggle="collapse"
+                    data-target="#summary">
+                <span class="glyphicon glyphicon-menu-hamburger"></span>
+                <span> Show Totals</span>
+            </button>
+        </div>
+        <div id="summary" class="collapse navbar-collapse">
+            <ul class="nav">
+                <div class="row">
+                    <span id="menuTotals">Total</span>
+                    <div>
+                        <span class="pull-left">
+                        {{ skills_stats['Totals']['num_skills'] }} Skills
+                        </span>
+                        <span class="pull-right">
+                        {{ "{:,}".format(skills_stats['Totals']['total_sp']) }} SP
+                        </span>
+                    </div>
+                </div>
+                <span class="clearfix"></span>
+                <hr>
+                {% for group, child_skills in skills|dictsort %}
+                    {% set group_id = group.replace(" ", "").lower() %}
+                    <div class="row">
+                        <span id="menu{{ group_id }}">
+                          <a data-content="<pre>{% for name, level in child_skills|dictsort %}{{ name }}: {{ level }}<br>{% endfor %}</pre>"
+                             class="pop">{{ group }}
+                          </a>
+                        </span>
+                        <div>
+                            <span class="pull-left">
+                                {{ skills_stats[group]['skills_in_group'] }} Skills
+                            </span>
+                            <span class="pull-right">
+                                {{ "{:,}".format(skills_stats[group]['sp_in_group']) }} SP
+                            </span>
+                        </div>
+                    </div>
+                    <span class="clearfix"></span>
+                    <hr>
+                {% endfor %}
+            </ul>
+        </div>
+    </nav>
+</div>

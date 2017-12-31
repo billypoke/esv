@@ -1,0 +1,100 @@
+<!-- Standard -->
+<div class="row hidden-xs hidden-sm hidden-md">
+    <div class="col-xs-12">
+        <h4><span>Ships</span></h4>
+    </div>
+    {% for ship_type in ['Battleship', 'Battlecruiser', 'Cruiser', 'Destroyer', 'Frigate'] %}
+        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2">
+            <h5>{{ ship_type }}</h5>
+            {% for race in ['Amarr', 'Caldari', 'Gallente', 'Minmatar'] %}
+                <span class="lbl">{{ race }}</span>
+                <span class="pull-right">{{ skills['Spaceship Command'][race+' '+ship_type] }}</span>
+                <br>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Advanced -->
+<div class="row hidden-xs hidden-sm hidden-md">
+    <div class="col-xs-12">
+        <h4><span>Advanced Ships</span></h4>
+    </div>
+    <div class="col-xs-6 col-md-4 col-lg-2">
+        <span class="lbl">Marauders</span>
+        <span class="pull-right">{{ skills['Spaceship Command']['Marauders'] }}</span>
+        <br>
+        <span class="lbl">Black Ops</span>
+        <span class="pull-right">{{ skills['Spaceship Command']['Black Ops'] }}</span>
+        <br>
+    </div>
+    <div class="col-xs-6 col-md-4 col-lg-2">
+        <span class="lbl">Command Ships</span>
+        <span class="pull-right">{{ skills['Spaceship Command']['Command Ships'] }}</span>
+        <br>
+        <span class="lbl">&nbsp;</span>
+        <br>
+    </div>
+    <div class="col-xs-6 col-md-4 col-lg-2">
+        <span class="lbl">Recon Ships</span>
+        <span class="pull-right">{{ skills['Spaceship Command']['Recon Ships'] }}</span>
+        <br>
+        <span class="lbl">Heavy Assault Cruisers</span>
+        <span class="pull-right">{{ skills['Spaceship Command']['Heavy Assault Cruisers'] }}</span>
+        <br>
+        <span class="lbl">Heavy Interdictor Cruisers</span>
+        <span class="pull-right">{{ skills['Spaceship Command']['Heavy Interdiction Cruisers'] }}</span>
+        <br>
+        <span class="lbl">Logistics Cruisers</span>
+        <span class="pull-right">{{ skills['Spaceship Command']['Logistics Cruisers'] }}</span>
+        <br>
+
+        {% for race in ['Amarr', 'Caldari', 'Gallente', 'Minmatar'] %}
+            {% if skills['Spaceship Command'][race+' Strategic Cruiser'] is defined %}
+                <a class="pop"
+                   data-content="<pre>{% for subsystem in ['Offensive', 'Defensive', 'Propulsion', 'Core'] %}{{ race+' '+subsystem }} Systems: {{ skills['Subsystems'][race+' '+subsystem+' Systems'] }}<br>{% endfor %}</pre>"
+            {% endif %}>
+            <span class="lbl">{{ race }} Strategic</span>
+        </a>
+            <span class="pull-right">{{ skills['Spaceship Command'][race+' Strategic Cruiser'] }}</span>
+            <br>
+        {% endfor %}
+    </div>
+    <div class="col-xs-6 col-md-4 col-lg-2">
+        <span class="lbl">Interdictors</span>
+        <span class="pull-right">{{ skills['Spaceship Command']['Interdictors'] }}</span>
+        <br>
+        <span class="lbl">Command Destroyers</span>
+        <span class="pull-right">{{ skills['Spaceship Command']['Command Destroyers'] }}</span>
+        <br>
+        <span class="lbl">&nbsp;</span>
+        <br>
+        <span class="lbl">&nbsp;</span>
+        <br>
+
+        <span class="lbl">Confessor</span>
+        <span class="pull-right">{{ skills['Spaceship Command']['Amarr Tactical Destroyer'] }}</span>
+        <br>
+        <span class="lbl">Jackdaw</span>
+        <span class="pull-right">{{ skills['Spaceship Command']['Caldari Tactical Destroyer'] }}</span>
+        <br>
+        <span class="lbl">Hecate</span>
+        <span class="pull-right">{{ skills['Spaceship Command']['Gallente Tactical Destroyer'] }}</span>
+        <br>
+        <span class="lbl">Svipul</span>
+        <span class="pull-right">{{ skills['Spaceship Command']['Minmatar Tactical Destroyer'] }}</span>
+        <br>
+    </div>
+    <div class="col-xs-6 col-md-4 col-lg-2">
+        <span class="lbl">Interceptors</span> <span
+            class="pull-right">{{ skills['Spaceship Command']['Interceptors'] }}</span><br>
+        <span class="lbl">Assault Frigates</span> <span
+            class="pull-right">{{ skills['Spaceship Command']['Assault Frigates'] }}</span><br>
+        <span class="lbl">Covert Ops</span> <span
+            class="pull-right">{{ skills['Spaceship Command']['Covert Ops'] }}</span><br>
+        <span class="lbl">Electronic Attack Ships</span> <span
+            class="pull-right">{{ skills['Spaceship Command']['Electronic Attack Ships'] }}</span><br>
+        <span class="lbl">Logistics Frigates</span> <span
+            class="pull-right">{{ skills['Spaceship Command']['Logistics Frigates'] }}</span><br>
+    </div>
+</div>

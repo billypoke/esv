@@ -1,0 +1,52 @@
+<div class="row">
+    <div class="col-xs-12">
+        <h5>Racial Skills</h5>
+    </div>
+    {% for race in ['Amarr', 'Caldari', 'Gallente', 'Minmatar'] %}
+        <div class="col-xs-6 col-md-3 col-xl-3">
+            <h6>{{ race }}</h6>
+            {% for type in ['Dreadnought', 'Carrier', 'Titan'] %}
+                <span class="lbl">{{ type }}</span>
+                <span class="pull-right">{{ skills['Spaceship Command'][race+' '+type] }}</span>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-xl-4">
+        <div class="row">
+            <div class="col-xs-12">
+                <h5>Piloting</h5>
+
+                <span class="lbl">Advanced Spaceship Command</span>
+                <span class="pull-right">{{ skills['Spaceship Command']['Advanced Spaceship Command'] }}</span>
+                <br>
+                <span class="lbl">Capital Ships</span>
+                <span class="pull-right">{{ skills['Spaceship Command']['Capital Ships'] }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-xl-8">
+        <div class="row">
+            <div class="col-xs-6">
+                <h5>Jump Skills</h5>
+
+                {% for type in ['Cynosural Field Theory', 'Jump Drive Calibration', 'Jump Drive Operation', 'Jump Fuel Conservation'] %}
+                    <span class="lbl">{{ type }}</span>
+                    <span class="pull-right">{{ skills['Navigation'][type] }}</span>
+                    <br>
+                {% endfor %}
+            </div>
+            <div class="col-xs-6">
+                <h5>Carrier Skills</h5>
+
+                {% for skill in ['Fighters', 'Fighter Hangar Management', 'Light Fighters', 'Support Fighters', 'Heavy Fighters'] %}
+                    <span class="lbl">{{ skill }}</span>
+                    <span class="pull-right">{{ skills['Drones'][skill] }}</span>
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

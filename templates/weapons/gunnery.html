@@ -1,0 +1,56 @@
+{% if 'Gunnery' in skills %}
+    <div class="col-xs-12 col-xl-6">
+        <div class="row">
+            <div class="col-xs-12 col-lg-9">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h5>Gunnery</h5>
+                    </div>
+                    {% for size in ['Small', 'Medium', 'Large'] %}
+                        <div class="col-xs-6 col-md-4">
+                            <h6>{{ size }}</h6>
+                            {% for type in ['Energy Turret', 'Hybrid Turret', 'Projectile Turret'] %}
+                                <span class="lbl">{{ size+' '+type }}</span>
+                                <span class="pull-right">{{ skills['Gunnery'][size+' '+type] }}</span>
+                                <br>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h5>Gunnery Specialization</h5>
+                    </div>
+                    {% for size in ['Small', 'Medium', 'Large'] %}
+                        <div class="col-xs-6 col-md-4">
+                            <h6 class="hidden-md hidden-lg hidden-xl">{{ size }}</h6>
+                            {% for type in ['Pulse Laser', 'Beam Laser'] %}
+                                <span class="lbl">{{ type }}</span>
+                                <span class="pull-right">{{ skills['Gunnery'][size+' '+type+' Specialization'] }}</span>
+                                <br>
+                            {% endfor %}
+                            {% for type in ['Blaster', 'Railgun'] %}
+                                <span class="lbl">{{ type }}</span>
+                                <span class="pull-right">{{ skills['Gunnery'][size+' '+type+' Specialization'] }}</span>
+                                <br>
+                            {% endfor %}
+                            {% for type in ['Autocannon', 'Artillery'] %}
+                                <span class="lbl">{{ type }}</span>
+                                <span class="pull-right">{{ skills['Gunnery'][size+' '+type+' Specialization'] }}</span>
+                                <br>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                <h5>Gunnery Support</h5>
+                {% for skill in ['Controlled Bursts', 'Gunnery', 'Motion Prediction', 'Rapid Firing', 'Sharpshooter', 'Surgical Strike', 'Trajectory Analysis'] %}
+                    <span class="lbl">{{ skill }}</span>
+                    <span class="pull-right">{{ skills['Gunnery'][skill] }}</span><br>
+                {% endfor %}
+            </div>
+        </div>
+        <hr class="hidden-xl">
+    </div>
+{% endif %}

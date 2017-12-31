@@ -1,0 +1,19 @@
+<div class="col-xs-12 col-sm-6 col-md-4">
+    <h4>Fitting</h4>
+    {% for skill in ['Weapon Upgrades', 'Advanced Weapon Upgrades', 'CPU Management', 'Power Grid Management'] %}
+        <span class="lbl">{{ skill }}</span>
+        <span class="pull-right">{{ skills['Engineering'][skill] }}</span>
+        <br>
+    {% endfor %}
+
+    <hr class="hidden-md hidden-lg hidden-xl">
+
+    <h4>Overheating</h4>
+    {% for skill in ['Thermodynamics', 'Nanite Interfacing', 'Nanite Operation'] %}
+        <span class="lbl">{{ skill }}</span>
+        <span class="pull-right">{{ skills['Engineering'][skill] }}</span>
+        <br>
+    {% endfor %}
+
+    <hr class="hidden-md hidden-lg hidden-xl">
+</div>

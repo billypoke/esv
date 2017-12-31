@@ -1,0 +1,21 @@
+<div class="row hidden-xs hidden-sm hidden-md">
+    <div class="col-xs-12">
+        <h4>Weapons</h4>
+    </div>
+    {% include "weapons/gunnery.html" %}
+    {% include "weapons/missiles.html" %}
+    {% include "weapons/drones.html" %}
+</div>
+<div class="row panel panel-default hidden-lg hidden-xl">
+    <div class="panel-heading" data-toggle="collapse" data-target="#weapons">
+        <h4 class="panel-title"><span>Weapons</span></h4>
+    </div>
+    <div id="weapons" class="panel-collapse collapse in">
+        <div class="panel-body">
+            {% include "weapons/gunnery.html" %}
+            {% include "weapons/missiles.html" %}
+            {% include "weapons/drones.html" %}
+        </div>
+    </div>
+</div>
+<hr class="hidden-xs hidden-sm hidden-md">

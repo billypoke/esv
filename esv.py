@@ -96,8 +96,9 @@ def view_pilot(refresh_token=None):
                         # Add skill and metadata to dicts
                         skill_id = skill['skill_id']
                         skill_name = next(
-                            item['name'] for item in skill_names if item['id'] == skill_id)  # stackoverflow FTW
-                        skill_level_trained = skill['current_skill_level']
+                            item['name'] for item in skill_names if item['id'] == skill_id  # stackoverflow FTW
+                        )
+                        skill_level_trained = skill['active_skill_level']
                         skills_dict[group][skill_name] = skill_level_trained
                         skills_stats[group]['skills_in_group'] += 1
                         skills_stats[group]['sp_in_group'] += skill['skillpoints_in_skill']
