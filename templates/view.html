@@ -1,4 +1,4 @@
-{% include "head.html" %}
+{% include "dist/head.html" %}
 
 {% if show_crest %}
     <div class="row" id="faq">
@@ -69,23 +69,23 @@
         </h4>
         <hr>
         <div class="row">
-            {% include "nav.html" %}
+            {% include "dist/nav.html" %}
 
             <div id="breakdown" class="col-xl-10 col-md-9 col-sm-8 col-xs-12">
                 <!-- Ships -->
-                {% include "ships/ships.html" %}
+                {% include "dist/ships.html" %}
 
                 <!-- Weapons -->
-                {% include "weapons/weapons.html" %}
+                {% include "dist/weapons.html" %}
 
                 <!-- Misc -->
-                {% include "misc/misc.html" %}
+                {% include "dist/misc.html" %}
 
                 <!-- Mobile Capitals -->
-                {% include "ships/capitals_mobile.html" %}
+                {% include "dist/capitals_mobile.html" %}
             </div>
         </div>
     {% endif %}
 {% endif %}
 
-{% include "foot.html" %}
+{% include "dist/foot.html" %}
