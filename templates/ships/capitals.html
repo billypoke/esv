@@ -1,20 +1,22 @@
 <div class="row">
-    <div class="col-xs-12">
-        <h5>Racial Skills</h5>
-    </div>
-    {% for race in ['Amarr', 'Caldari', 'Gallente', 'Minmatar'] %}
-        <div class="col-xs-6 col-md-3 col-xl-3">
-            <h6>{{ race }}</h6>
-            {% for type in ['Dreadnought', 'Carrier', 'Titan'] %}
-                <span class="lbl">{{ type }}</span>
-                <span class="pull-right">{{ skills['Spaceship Command'][race+' '+type] }}</span>
+    <div class="col-lg-6 col-xl-12">
+        <div class="row">
+            <div class="col-xs-12">
+                <h5>Racial Skills</h5>
+            </div>
+            {% for race in ['Amarr', 'Caldari', 'Gallente', 'Minmatar'] %}
+                <div class="col-xs-6 col-md-3 col-xl-3">
+                    <h6>{{ race }}</h6>
+                    {% for type in ['Dreadnought', 'Carrier', 'Titan'] %}
+                        <span class="lbl">{{ type }}</span>
+                        <span class="pull-right">{{ skills['Spaceship Command'][race+' '+type] }}</span>
+                    {% endfor %}
+                </div>
             {% endfor %}
         </div>
-    {% endfor %}
-</div>
+    </div>
 
-<div class="row">
-    <div class="col-xs-12 col-xl-4">
+    <div class="col-xs-12 col-sm-6 col-lg-2 col-xl-4">
         <div class="row">
             <div class="col-xs-12">
                 <h5>Piloting</h5>
@@ -27,7 +29,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-12 col-xl-8">
+    <div class="col-lg-4 col-xl-8">
         <div class="row">
             <div class="col-xs-6">
                 <h5>Jump Skills</h5>
