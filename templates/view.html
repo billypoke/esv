@@ -1,91 +1,118 @@
 {% include "dist/head.html" %}
 
-{% if show_crest %}
-    <div class="row" id="faq">
-        <div class="row hidden-md hidden-lg hidden-sm">
-            <div id="login" class="col-xs-12">
-                <a href="{{ crest_url }}">
-                    <img src="static/images/sso_black.png" alt="Click here to log in" />
-                </a>
+<body>
+<div id="banner" class="container">
+    <h2><strong><a href="{{ url_for('landing') }}">EVE ESI Skill Viewer</a></strong></h2>
+</div>
+<div class="container-fluid" role="main" id="content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                {% if message %}
+                    {% if category == 'success' %}
+                        <div class="alert alert-success" role="alert">
+                            <p>{{ message }}</p>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-danger" role="alert">
+                            <p>{{ message }}</p>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    {% if show_crest %}
+        <div class="row" id="faq">
+            <div class="row hidden-md hidden-lg hidden-sm">
+                <div id="login" class="col-xs-12">
+                    <a href="{{ crest_url }}">
+                        <img src="static/images/sso_black.png" alt="Click here to log in"/>
+                    </a>
+                </div>
+            </div>
+            <div class="row hidden-md hidden-lg hidden-sm">
+                <div class="col-xs-12">
+                    <h3>FAQ</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <h4>What is this?</h4>
+                    <p>
+                        A web app to view your skills, grouped into useful categories. See where you have good coverage,
+                        and
+                        where you need to train your skills.
+                    </p>
+                </div>
+                <div class="col-xs-12">
+                    <h4>How does it work?</h4>
+                    <p>
+                        Using
+                        <a href="https://community.eveonline.com/news/dev-blogs/eve-online-sso-and-what-you-need-to-know/">
+                            EVE's SSO
+                        </a> (Single Sign On) system and the new <a href="https://esi.tech.ccp.is/latest/">ESI API</a>.
+                        You are guaranteed to be going to CCP's server for authentication, and you can see exactly what
+                        permissions you are granting to this application.
+                    </p>
+                </div>
+                <div class="col-xs-12">
+                    <h4>I don't trust you?</h4>
+                    <p>Feel free to <a href="https://github.com/billypoke/esv" target="_blank">check out the code</a> on
+                        GitHub. I don't store your
+                        <a href="http://eveonline-third-party-documentation.readthedocs.io/en/latest/sso/refreshtokens.html"
+                           target="_blank">
+                            refresh token
+                        </a>. This means I will not have access to your info after you leave the site. That being said,
+                        I
+                        encourage you to check your authorized
+                        <a href="https://community.eveonline.com/support/third-party-applications/" target="_blank">
+                            Third Party Applications
+                        </a> and make sure that there are none that you are not currently using.
+                    </p>
+                </div>
+                <div class="col-xs-12">
+                    <h4>Let's do this!</h4>
+                    <p>Click the button below to get started.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div id="login" class="col-xs-12">
+                    <a href="{{ crest_url }}">
+                        <img src="static/images/sso_black.png" alt="Click here to log in">
+                    </a>
+                </div>
             </div>
         </div>
-        <div class="row hidden-md hidden-lg hidden-sm">
-            <div class="col-xs-12">
-                <h3>FAQ</h3>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <h4>What is this?</h4>
-                <p>
-                    A web app to view your skills, grouped into useful categories. See where you have good coverage, and
-                    where you need to train your skills.
-                </p>
-            </div>
-            <div class="col-xs-12">
-                <h4>How does it work?</h4>
-                <p>
-                    Using
-                    <a href="https://community.eveonline.com/news/dev-blogs/eve-online-sso-and-what-you-need-to-know/">
-                        EVE's SSO
-                    </a> (Single Sign On) system and the new <a href="https://esi.tech.ccp.is/latest/">ESI API</a>.
-                    You are guaranteed to be going to CCP's server for authentication, and you can see exactly what
-                    permissions you are granting to this application.
-                </p>
-            </div>
-            <div class="col-xs-12">
-                <h4>I don't trust you?</h4>
-                <p>Feel free to <a href="https://github.com/billypoke/esv" target="_blank">check out the code</a> on
-                    GitHub. I don't store your
-                    <a href="http://eveonline-third-party-documentation.readthedocs.io/en/latest/sso/refreshtokens.html"
-                       target="_blank">
-                        refresh token
-                    </a>. This means I will not have access to your info after you leave the site. That being said, I
-                    encourage you to check your authorized
-                    <a href="https://community.eveonline.com/support/third-party-applications/" target="_blank">
-                        Third Party Applications
-                    </a> and make sure that there are none that you are not currently using.
-                </p>
-            </div>
-            <div class="col-xs-12">
-                <h4>Let's do this!</h4>
-                <p>Click the button below to get started.</p>
-            </div>
-        </div>
-        <div class="row">
-            <div id="login" class="col-xs-12">
-                <a href="{{ crest_url }}">
-                    <img src="static/images/sso_black.png" alt="Click here to log in">
-                </a>
-            </div>
-        </div>
-    </div>
-{% else %}
-    {% if skills %}
-        <h1>Pilot - {{ pilot_name }}</h1>
-        <h4>
-            <a href="https://zkillboard.com/character/{{ pilot_id }}/" target="_blank">zKillboard</a> |
-            <a href="https://evewho.com/pilot/{{ pilot_name }}/" target="_blank">EVEWho</a>
-        </h4>
-        <hr>
-        <div class="row">
-            {% include "dist/nav.html" %}
+    {% else %}
+        {% if skills %}
+            <h1>Pilot - {{ pilot_name }}</h1>
+            <h4>
+                <a href="https://zkillboard.com/character/{{ pilot_id }}/" target="_blank">zKillboard</a> |
+                <a href="https://evewho.com/pilot/{{ pilot_name }}/" target="_blank">EVEWho</a>
+            </h4>
+            <hr>
+            <div class="row">
+                {% include "dist/nav.html" %}
 
-            <div id="breakdown" class="col-xl-10 col-md-9 col-sm-8 col-xs-12">
-                <!-- Ships -->
-                {% include "dist/ships.html" %}
+                <div id="breakdown" class="col-xl-10 col-md-9 col-sm-8 col-xs-12">
+                    <!-- Ships -->
+                    {% include "dist/ships.html" %}
 
-                <!-- Weapons -->
-                {% include "dist/weapons.html" %}
+                    <!-- Weapons -->
+                    {% include "dist/weapons.html" %}
 
-                <!-- Misc -->
-                {% include "dist/misc.html" %}
+                    <!-- Misc -->
+                    {% include "dist/misc.html" %}
 
-                <!-- Mobile Capitals -->
-                {% include "dist/capitals_mobile.html" %}
+                    <!-- Mobile Capitals -->
+                    {% include "dist/capitals_mobile.html" %}
+                </div>
             </div>
-        </div>
+        {% endif %}
     {% endif %}
-{% endif %}
-
+</div> <!-- main container -->
 {% include "dist/foot.html" %}
+
+</body>
+</html>
