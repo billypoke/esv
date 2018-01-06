@@ -24,6 +24,7 @@ gulp.task('minify', function() {
       'templates/misc/*.html',
       'templates/ships/*.html',
       'templates/weapons/*.html',
+      'templates/tank/*.html',
       'templates/*.html'
   ])
     .pipe(htmlmin({

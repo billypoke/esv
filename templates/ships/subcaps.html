@@ -52,10 +52,12 @@
         {% for race in ['Amarr', 'Caldari', 'Gallente', 'Minmatar'] %}
             {% if skills['Spaceship Command'][race+' Strategic Cruiser'] is defined %}
                 <a class="pop"
-                   data-content="<pre>{% for subsystem in ['Offensive', 'Defensive', 'Propulsion', 'Core'] %}{{ race+' '+subsystem }} Systems: {{ skills['Subsystems'][race+' '+subsystem+' Systems'] }}<br>{% endfor %}</pre>"
-            {% endif %}>
-            <span class="lbl">{{ race }} Strategic</span>
-        </a>
+                   data-content="<pre>{% for subsystem in ['Offensive', 'Defensive', 'Propulsion', 'Core'] %}{{ race+' '+subsystem }} Systems: {{ skills['Subsystems'][race+' '+subsystem+' Systems'] }}<br>{% endfor %}</pre>">
+                    <span class="lbl">{{ race }} Strategic</span>
+                </a>
+            {% else %}
+                <span class="lbl">{{ race }} Strategic</span>
+            {% endif %}
             <span class="pull-right">{{ skills['Spaceship Command'][race+' Strategic Cruiser'] }}</span>
             <br>
         {% endfor %}

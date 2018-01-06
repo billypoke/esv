@@ -1,7 +1,7 @@
 {% if 'Missiles' in skills %}
-    <div class="col-xs-12 col-md-9 col-xl-4">
+    <div class="col-xs-12 col-lg-9 col-xl-4">
         <div class="row">
-            <div class="col-xs-12 col-lg-8">
+            <div class="col-xs-12 col-md-8">
                 <div class="row">
                     <div class="col-xs-12">
                         <h5>Missiles</h5>
@@ -25,7 +25,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <h5>Missile Specialization</h5>
+                        <h6>Missile Specialization</h6>
                     </div>
                     <div class="col-xs-6">
                         {% for type in ['Rocket', 'Light Missile', 'Heavy Assault Missile'] %}
@@ -43,7 +43,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-12 col-lg-4">
+            <div class="col-xs-12 col-sm-6 col-md-4">
                 <h5>Missile Support</h5>
                 {% for skill in ['Guided Missile Precision', 'Missile Bombardment', 'Missile Launcher Operation', 'Missile Projection', 'Rapid Launch', 'Target Navigation Prediction', 'Warhead Upgrades'] %}
                     <span class="lbl">{{ skill }}</span>
@@ -51,7 +51,8 @@
                 {% endfor %}
             </div>
         </div>
-
-        <hr class="hidden-md hidden-lg hidden-xl">
+    </div>
+    <div class="col-xs-12 hidden-xl">
+        <hr>
     </div>
 {% endif %}

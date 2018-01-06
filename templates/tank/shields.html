@@ -1,0 +1,28 @@
+{% if 'Shields' in skills %}
+    <div class="col-xs-12 col-md-6 col-xl-4">
+        <div class="row">
+            <div class="col-xs-12">
+                <h5>Shields</h5>
+            </div>
+            <div class="col-xs-6">
+                <h6>Base</h6>
+                {% for skill in ['Compensation', 'Operation', 'Management', 'Upgrades'] %}
+                    <span class="lbl">Shield {{ skill }}</span>
+                    <span class="pull-right">{{ skills['Shields']['Shield '+skill] }}</span><br>
+                {% endfor %}
+                <span class="lbl">Tactical Shield Manipulation</span>
+                <span class="pull-right">{{ skills['Shields']['Tactical Shield Manipulation'] }}</span><br>
+            </div>
+
+            <div class="col-xs-6">
+                <h6>Compensation</h6>
+                {% for type in ['EM', 'Thermal', 'Kinetic', 'Explosive'] %}
+                    <span class="lbl">{{ type }}</span>
+                    <span class="pull-right">{{ skills['Shields'][type+' Shield Compensation'] }}</span>
+                    <br>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+{% endif %}

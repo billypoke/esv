@@ -1,0 +1,19 @@
+<div class="row hidden-xs hidden-sm hidden-md">
+    <div class="col-xs-12">
+        <h4>Tank</h4>
+    </div>
+    {% include "dist/armor.html" %}
+    {% include "dist/shields.html" %}
+</div>
+<div class="row panel panel-default hidden-lg hidden-xl">
+    <div class="panel-heading" data-toggle="collapse" data-target="#tank">
+        <h4 class="panel-title"><span>Tank</span></h4>
+    </div>
+    <div id="tank" class="panel-collapse collapse in">
+        <div class="panel-body">
+            {% include "dist/armor.html" %}
+            {% include "dist/shields.html" %}
+        </div>
+    </div>
+</div>
+<hr class="hidden-xs hidden-sm hidden-md">
