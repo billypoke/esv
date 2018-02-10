@@ -4,8 +4,7 @@
         <a href="https://gate.eveonline.com/Profile/Streetlamp%20LeBear/" target="_blank">
             Streetlamp LeBear
         </a> |
-        View the code on <a href="https://github.com/billypoke/esv">GitHub</a> |
-        ESI - {{ "{:.3f}".format(network_time) }} sec / Parse - {{ "{:.3f}".format(parse_time) }} sec
+        View the code on <a href="https://github.com/billypoke/esv">GitHub</a>
     </div>
 </footer>
 <!-- jQuery -->
@@ -15,21 +14,39 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
+<!-- FontAwesome -->
+<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 <script type="text/javascript">
     $(function () {
-        $('.pop').popover({
-            html: true,
-            trigger: "hover"
+        $.ajax({
+            url: '/esv/get_skills/{{ refresh_token }}',
+            success: function (data) {
+                $('#skills').html(data);
+                $('#loading_div').fadeOut(400, function () {
+                    $('#skills').slideDown();
+                    $('#timings').fadeIn();
+                });
+
+                $('.pop').popover({
+                    html: true,
+                    trigger: "hover"
+                });
+
+                $('#breakdown').find('.pull-right').each(function () {
+                    var level = parseInt($(this).html());
+                    if (!isNaN(level)) {
+                        $(this).addClass('level l' + level);
+                    } else {
+                        $(this).addClass('level notinjected');
+                        $(this).html("X")
+                    }
+                });
+            }
         });
 
-        $('#breakdown').find('.pull-right').each(function () {
-            var level = parseInt($(this).html());
-            if (!isNaN(level)) {
-                $(this).addClass('level l' + level);
-            } else {
-                $(this).addClass('level notinjected');
-                $(this).html("X")
-            }
+        $('.pull-down').each(function () {
+            var $this = $(this);
+            $this.css('margin-top', $this.parent().height() - $this.height())
         });
     })
 </script>

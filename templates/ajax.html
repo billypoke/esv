@@ -1,0 +1,23 @@
+{% include "dist/nav.html" %}
+
+<div id="breakdown" class="col-xl-10 col-md-9 col-sm-8 col-xs-12">
+    <!-- Ships -->
+    {% include "dist/ships.html" %}
+
+    <!-- Weapons -->
+    {% include "dist/weapons.html" %}
+
+    <!-- Weapons -->
+    {% include "dist/tank.html" %}
+
+    <!-- Misc -->
+    {% include "dist/misc.html" %}
+
+    <!-- Mobile Capitals -->
+    {% include "dist/capitals_mobile.html" %}
+</div>
+
+<script type="text/javascript">
+    $('#esi_time').html({{ "{:.3f}".format(network_time) }});
+    $('#parse_time').html({{ "{:.3f}".format(parse_time) }});
+</script>

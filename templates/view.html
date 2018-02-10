@@ -85,32 +85,24 @@
             </div>
         </div>
     {% else %}
-        {% if skills %}
-            <h1>Pilot - {{ pilot_name }}</h1>
-            <h4>
-                <a href="https://zkillboard.com/character/{{ pilot_id }}/" target="_blank">zKillboard</a> |
-                <a href="https://evewho.com/pilot/{{ pilot_name }}/" target="_blank">EVEWho</a>
-            </h4>
-            <hr>
-            <div class="row">
-                {% include "dist/nav.html" %}
-
-                <div id="breakdown" class="col-xl-10 col-md-9 col-sm-8 col-xs-12">
-                    <!-- Ships -->
-                    {% include "dist/ships.html" %}
-
-                    <!-- Weapons -->
-                    {% include "dist/weapons.html" %}
-
-                    <!-- Weapons -->
-                    {% include "dist/tank.html" %}
-
-                    <!-- Misc -->
-                    {% include "dist/misc.html" %}
-
-                    <!-- Mobile Capitals -->
-                    {% include "dist/capitals_mobile.html" %}
+        {% if pilot_name %}
+            <div class="clearfix">
+                <div class="pull-left">
+                    <h1>Pilot - {{ pilot_name }}</h1>
+                    <h4>
+                        <a href="https://zkillboard.com/character/{{ pilot_id }}/" target="_blank">zKillboard</a> |
+                        <a href="https://evewho.com/pilot/{{ pilot_name }}/" target="_blank">EVEWho</a>
+                    </h4>
                 </div>
+                <div id="timings" class="pull-right pull-down" style="display: none;">
+                    ESI - <span id="esi_time"></span> sec / Parse - <span id="parse_time"></span> sec
+                </div>
+            </div>
+            <hr>
+            <div id="skills" class="row" style="display: none;">
+            </div>
+            <div id="loading_div" class="row text-center">
+                <i class="fas fa-cog fa-spin fa-10x"></i>
             </div>
         {% endif %}
     {% endif %}
