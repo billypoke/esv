@@ -86,16 +86,36 @@
         </div>
     {% else %}
         {% if pilot_name %}
-                <div class="row">
+            <div class="row">
+                <div class="col-xs-12">
                     <h1>Pilot - {{ pilot_name }}</h1>
                     <h4>
                         <a href="https://zkillboard.com/character/{{ pilot_id }}/" target="_blank">zKillboard</a> |
                         <a href="https://evewho.com/pilot/{{ pilot_name }}/" target="_blank">EVEWho</a>
                     </h4>
                 </div>
-                <div id="timings" class="row pull-right" style="display: none;">
+            </div>
+            <div id="current_skill" class="row" style="display: none;">
+                <div class="col-xs-12">
+                    <h4>Skills in Queue: <span id="skill_count"></span> <small>(Ends <span id="total_time"></span> EVE)</small></h4>
+                </div>
+                <div class="col-xs-12">
+                    <h4>Currently Training: <span id="current_skill_name"></span></h4>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <div class="progress">
+                        <div id="current_progress" class="progress-bar progress-bar-striped active" role="progressbar"></div>
+                    </div>
+                </div>
+                <div id="progress_metrics" class="col-xs-12 col-md-6">
+                    <span id="time_remaining"></span> (<span id="finish_datetime"></span>)
+                </div>
+            </div>
+            <div id="timings" class="row pull-right" style="display: none;">
+                <div class="col-xs-12">
                     ESI - <span id="esi_time"></span> sec / Parse - <span id="parse_time"></span> sec
                 </div>
+            </div>
             <hr>
             <div id="skills" class="row" style="display: none;">
             </div>

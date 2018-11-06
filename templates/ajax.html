@@ -14,10 +14,16 @@
     {% include "dist/misc.html" %}
 
     <!-- Mobile Capitals -->
-    {% include "dist/capitals_mobile.html" %}
 </div>
 
 <script type="text/javascript">
-    $('#esi_time').html({{ "{:.3f}".format(network_time) }});
+    $('#esi_time').html({{ "{:1.3f}".format(network_time) }});
     $('#parse_time').html({{ "{:.3f}".format(parse_time) }});
+    $('#current_skill_name').html('{{ current_skill['skill_name'] }} (Level {{ current_skill['skill_level'] }})');
+    var formatted_pct = '{{ "{:.2f}".format(current_skill['completed_pct']) }}' + '%';
+    $('#current_progress').css('width', formatted_pct).html(formatted_pct);
+    $('#time_remaining').html('{{ current_skill['time_remaining'] }}');
+    $('#finish_datetime').html('{{ current_skill['finish_datetime'] }}');
+    $('#skill_count').html('{{ skill_count }}');
+    $('#total_time').html('{{ total_time }}');
 </script>

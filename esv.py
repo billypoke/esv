@@ -1,7 +1,8 @@
 import json
+import time
+from datetime import datetime
 
 import requests
-import time
 import yaml
 from flask import Flask, render_template, flash, request, redirect, url_for
 from preston.esi import Preston
@@ -43,7 +44,7 @@ def view_pilot(refresh_token=None):
                 auth = preston.authenticate(request.args['code'])
             except Exception as e:
                 print('SSO callback exception: ' + str(e))
-                flash('There was an authentication error signing you in.', 'error')
+                flash('There was an error signing you in.', 'error')
                 return redirect(url_for('landing'))
 
             return redirect(url_for('view_pilot', refresh_token=auth.refresh_token))
@@ -119,7 +120,7 @@ def get_skills(refresh_token):
                 # Add skill and metadata to dicts
                 skill_id = skill['skill_id']
                 skill_name = next(
-                    item['name'] for item in skill_names if item['id'] == skill_id  # stackoverflow FTW
+                    item['name'] for item in skill_names if item['id'] == skill_id
                 )
                 skill_level_trained = skill['active_skill_level']
                 skills_dict[group][skill_name] = skill_level_trained
@@ -127,12 +128,47 @@ def get_skills(refresh_token):
                 skills_stats[group]['sp_in_group'] += skill['skillpoints_in_skill']
                 skills_stats['Totals']['total_sp'] += skill['skillpoints_in_skill']
 
+    result = auth.characters[pilot_id].skillqueue()
+
+    utcnow = datetime.utcnow()
+    fmt = '%Y-%m-%dT%H:%M:%SZ'
+    current_skill = result[0]
+    utcnow_fmt = datetime.strftime(utcnow, fmt)
+    skill_count = len(result)
+    if current_skill['finish_date'] < utcnow_fmt:
+        current_skill = result[1]
+        skill_count = len(result) - 1
+
+    finish_datetime = datetime.strptime(current_skill['finish_date'], fmt)
+    start_datetime = datetime.strptime(current_skill['start_date'], fmt)
+    total_time = finish_datetime - start_datetime
+    spent_time = utcnow - start_datetime
+    time_remaining = total_time - spent_time
+    completed_pct = spent_time / total_time * 100
+    skill_name = next(
+        item['name'] for item in skill_names if item['id'] == current_skill['skill_id']
+    )
+    current_skill = {
+        'time_remaining': str(time_remaining).split('.')[0],
+        'finish_datetime': datetime.strftime(finish_datetime, '%Y-%m-%d %H:%M:%S EVE'),
+        'completed_pct': completed_pct,
+        'skill_name': skill_name,
+        'skill_level': current_skill['finished_level']
+    }
+
+    total_time = utcnow
+    for skill in result:
+        total_time += datetime.strptime(skill['finish_date'], fmt) - datetime.strptime(skill['start_date'], fmt)
+
+    total_time = str(total_time).split('.')[0]
+
     t1 = time.time()
 
     parse_time = t1 - t0
 
     return render_template('dist/ajax.html', skills=skills_dict, skills_stats=skills_stats, network_time=network_time,
-                           parse_time=parse_time, base_url=config['BASE_URL'])
+                           parse_time=parse_time, base_url=config['BASE_URL'], current_skill=current_skill,
+                           skill_count=skill_count, total_time=total_time)
 
 
 if __name__ == "__main__":
