@@ -135,9 +135,10 @@ def get_skills(refresh_token):
     current_skill = result[0]
     utcnow_fmt = datetime.strftime(utcnow, fmt)
     skill_count = len(result)
-    if current_skill['finish_date'] < utcnow_fmt:
+    while current_skill['finish_date'] < utcnow_fmt:
         current_skill = result[1]
         skill_count = len(result) - 1
+        result.pop(0)
 
     finish_datetime = datetime.strptime(current_skill['finish_date'], fmt)
     start_datetime = datetime.strptime(current_skill['start_date'], fmt)
