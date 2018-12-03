@@ -18,33 +18,35 @@
 <script defer src="//use.fontawesome.com/releases/v5.5.0/js/all.js"
         integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
         crossorigin="anonymous"></script>
-<script type="text/javascript">
-    $(function () {
-        $.ajax({
-            url: '/esv/get_skills/{{ refresh_token }}',
-            success: function (data) {
-                $('#skills').html(data);
-                $('#loading_div').fadeOut(400, function () {
-                    $('#skills').slideDown();
-                    $('#timings').fadeIn();
-                    $('#current_skill').fadeIn();
-                });
+{% if not show_crest %}
+    <script type="text/javascript">
+        $(function () {
+            $.ajax({
+                url: '/esv/get_skills/{{ refresh_token }}',
+                success: function (data) {
+                    $('#skills').html(data);
+                    $('#loading_div').fadeOut(400, function () {
+                        $('#skills').slideDown();
+                        $('#timings').fadeIn();
+                        $('#current_skill').fadeIn();
+                    });
 
-                $('.pop').popover({
-                    html: true,
-                    trigger: "hover"
-                });
+                    $('.pop').popover({
+                        html: true,
+                        trigger: "hover"
+                    });
 
-                $('#breakdown').find('.pull-right').each(function () {
-                    var level = parseInt($(this).html());
-                    if (!isNaN(level)) {
-                        $(this).addClass('level l' + level);
-                    } else {
-                        $(this).addClass('level notinjected');
-                        $(this).html("X")
-                    }
-                });
-            }
-        });
-    })
-</script>
+                    $('#breakdown').find('.pull-right').each(function () {
+                        var level = parseInt($(this).html());
+                        if (!isNaN(level)) {
+                            $(this).addClass('level l' + level);
+                        } else {
+                            $(this).addClass('level notinjected');
+                            $(this).html("X")
+                        }
+                    });
+                }
+            });
+        })
+    </script>
+{% endif %}
