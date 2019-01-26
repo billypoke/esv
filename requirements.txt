@@ -1,4 +1,4 @@
 PyYAML
 Flask==1.0.2
-Preston==3.2.0
+Preston==4.1.0
 pyopenssl
