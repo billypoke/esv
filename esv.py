@@ -194,8 +194,7 @@ def get_skills(refresh_token):
             item['name'] for item in skill_names if item['id'] == current_skill['skill_id']
         )
         current_skill = {
-            'time_remaining': str(time_remaining).split('.')[0],
-            'finish_datetime': datetime.strftime(finish_datetime, '%Y-%m-%d %H:%M:%S EVE'),
+            'finish_datetime': datetime.strftime(finish_datetime, '%Y-%m-%d %H:%M:%S'),
             'completed_pct': completed_pct,
             'skill_name': skill_name,
             'skill_level': current_skill['finished_level']

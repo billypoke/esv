@@ -19,11 +19,45 @@
 <script type="text/javascript">
     $('#esi_time').html({{ "{:1.3f}".format(network_time) }});
     $('#parse_time').html({{ "{:.3f}".format(parse_time) }});
+
     $('#current_skill_name').html('{{ current_skill['skill_name'] }} (Level {{ current_skill['skill_level'] }})');
-    var formatted_pct = '{{ "{:.2f}".format(current_skill['completed_pct']) }}' + '%';
+    let pct = 0 || {{ "{:.2f}".format(current_skill['completed_pct']) }};
+    let formatted_pct = '{{ "{:.2f}".format(current_skill['completed_pct']) }}' + '%';
     $('#current_progress').css('width', formatted_pct).html(formatted_pct);
-    $('#time_remaining').html('{{ current_skill['time_remaining'] }}');
     $('#finish_datetime').html('{{ current_skill['finish_datetime'] }}');
-    $('#skill_count').html('{{ skill_count }}');
     $('#total_time').html('{{ total_time }}');
+    $('#skill_count').html('{{ skill_count }}');
+
+
+    let finish_datetime = new Date('{{ current_skill['finish_datetime'] }}').getTime();
+    let pct_remaining = 100 - pct;
+    let initial_distance = finish_datetime - (new Date().getTime());
+
+    let x = setInterval(function () {
+        let now = new Date().getTime();
+        let distance = finish_datetime - now;
+
+        let new_pct_remaining = 100 - (pct_remaining - ((initial_distance - distance) * 100 / initial_distance)).toFixed(2);
+        let new_pct_formatted = new_pct_remaining + '%';
+        $('#current_progress').css('width', new_pct_formatted).html(new_pct_formatted);
+
+        // Time calculations for days, hours, minutes and seconds
+        let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        $('#time_remaining').html(days + " days " + pad(hours, 2) + ":" + pad(minutes, 2) + ":" + pad(seconds, 2));
+
+        // If the count down is finished, write some text
+        if (distance < 0) {
+            clearInterval(x);
+        }
+    }, 1000);
+
+    function pad(n, width, z) {
+        z = z || '0';
+        n = n + '';
+        return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+    }
 </script>
