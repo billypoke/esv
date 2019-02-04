@@ -12,6 +12,11 @@ config = yaml.load(open('config.conf', 'r'))
 application.config['SECRET_KEY'] = config['SECRET_KEY']
 
 
+@application.route('/')
+def index():
+    return redirect('/esv')
+
+
 @application.route('/esv')
 @application.route('/esv/')
 def landing():
@@ -186,10 +191,9 @@ def get_skills(refresh_token):
 
         finish_datetime = datetime.strptime(current_skill['finish_date'], fmt)
         start_datetime = datetime.strptime(current_skill['start_date'], fmt)
-        total_time = finish_datetime - start_datetime
-        spent_time = utcnow - start_datetime
-        time_remaining = total_time - spent_time
-        completed_pct = spent_time / total_time * 100
+        start_sp_ = current_skill['training_start_sp']
+        level_end_sp_ = current_skill['level_end_sp']
+        completed_pct = (start_sp_ / level_end_sp_) * 100
         skill_name = next(
             item['name'] for item in skill_names if item['id'] == current_skill['skill_id']
         )

@@ -28,24 +28,27 @@
     $('#total_time').html('{{ total_time }}');
     $('#skill_count').html('{{ skill_count }}');
 
-
-    let finish_datetime = new Date('{{ current_skill['finish_datetime'] }}').getTime();
+    let finish = moment.utc('{{ current_skill['finish_datetime'] }}');
+    let finish_timestamp = finish.unix();
     let pct_remaining = 100 - pct;
-    let initial_distance = finish_datetime - (new Date().getTime());
+    let now = moment.utc();
+    let now_timestamp = now.unix();
+    let initial_distance = finish_timestamp - now_timestamp;
 
     let x = setInterval(function () {
-        let now = new Date().getTime();
-        let distance = finish_datetime - now;
+        let now = moment.utc();
+        let now_timestamp = now.unix();
+        let distance = finish_timestamp - now_timestamp;
 
         let new_pct_remaining = 100 - (pct_remaining - ((initial_distance - distance) * 100 / initial_distance)).toFixed(2);
         let new_pct_formatted = new_pct_remaining + '%';
         $('#current_progress').css('width', new_pct_formatted).html(new_pct_formatted);
 
         // Time calculations for days, hours, minutes and seconds
-        let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        let days = Math.floor(distance / (60 * 60 * 24));
+        let hours = Math.floor((distance % (60 * 60 * 24)) / (60 * 60));
+        let minutes = Math.floor((distance % (60 * 60)) / (60));
+        let seconds = Math.floor((distance % (60)));
 
         $('#time_remaining').html(days + " days " + pad(hours, 2) + ":" + pad(minutes, 2) + ":" + pad(seconds, 2));
 
