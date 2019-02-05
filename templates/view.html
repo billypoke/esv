@@ -1,3 +1,6 @@
+<!doctype html>
+<html lang="en">
+
 {% include "dist/head.html" %}
 
 <body>
@@ -27,7 +30,7 @@
             <div class="row hidden-md hidden-lg hidden-sm">
                 <div id="login" class="col-xs-12">
                     <a href="{{ crest_url }}">
-                        <img src="static/images/sso_black.png" alt="Click here to log in"/>
+                        <img src="/static/images/sso_black.png" alt="Click here to log in"/>
                     </a>
                 </div>
             </div>
@@ -79,7 +82,7 @@
             <div class="row">
                 <div id="login" class="col-xs-12">
                     <a href="{{ crest_url }}">
-                        <img src="static/images/sso_black.png" alt="Click here to log in">
+                        <img src="/static/images/sso_black.png" alt="Click here to log in">
                     </a>
                 </div>
             </div>
@@ -97,14 +100,17 @@
             </div>
             <div id="current_skill" class="row" style="display: none;">
                 <div class="col-xs-12">
-                    <h4>Skills in Queue: <span id="skill_count"></span> <small>(Ends <span id="total_time"></span> EVE)</small></h4>
+                    <h4>Skills in Queue: <span id="skill_count"></span>
+                        <small>(Ends <span id="total_time"></span> EVE)</small>
+                    </h4>
                 </div>
                 <div class="col-xs-12">
                     <h4>Currently Training: <span id="current_skill_name"></span></h4>
                 </div>
                 <div class="col-xs-12 col-md-6">
                     <div class="progress">
-                        <div id="current_progress" class="progress-bar progress-bar-striped active" role="progressbar"></div>
+                        <div id="current_progress" class="progress-bar progress-bar-striped active"
+                             role="progressbar"></div>
                     </div>
                 </div>
                 <div id="progress_metrics" class="col-xs-12 col-md-6">
@@ -120,11 +126,12 @@
             <div id="skills" class="row" style="display: none;">
             </div>
             <div id="loading_div" class="row text-center">
-                <i class="fas fa-cog fa-spin fa-10x"></i>
+                <i class="fas fa-sync-alt fa-spin fa-10x"></i>
             </div>
         {% endif %}
     {% endif %}
 </div> <!-- main container -->
+
 {% include "dist/foot.html" %}
 
 </body>

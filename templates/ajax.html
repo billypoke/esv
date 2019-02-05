@@ -12,8 +12,6 @@
 
     <!-- Misc -->
     {% include "dist/misc.html" %}
-
-    <!-- Mobile Capitals -->
 </div>
 
 <script type="text/javascript">
@@ -31,6 +29,7 @@
     let finish = moment.utc('{{ current_skill['finish_datetime'] }}');
     let finish_timestamp = finish.unix();
     let pct_remaining = 100 - pct;
+    let step_size = pct_remaining / 1000;
     let now = moment.utc();
     let now_timestamp = now.unix();
     let initial_distance = finish_timestamp - now_timestamp;
@@ -40,9 +39,11 @@
         let now_timestamp = now.unix();
         let distance = finish_timestamp - now_timestamp;
 
-        let new_pct_remaining = 100 - (pct_remaining - ((initial_distance - distance) * 100 / initial_distance)).toFixed(2);
-        let new_pct_formatted = new_pct_remaining + '%';
-        $('#current_progress').css('width', new_pct_formatted).html(new_pct_formatted);
+        if ((distance / initial_distance) % step_size === 0) {
+            let new_pct = (pct + ((distance / initial_distance) * 100)).toFixed(2);
+            let new_pct_formatted = new_pct + '%';
+            $('#current_progress').css('width', new_pct_formatted).html(new_pct_formatted);
+        }
 
         // Time calculations for days, hours, minutes and seconds
         let days = Math.floor(distance / (60 * 60 * 24));
@@ -52,9 +53,9 @@
 
         $('#time_remaining').html(days + " days " + pad(hours, 2) + ":" + pad(minutes, 2) + ":" + pad(seconds, 2));
 
-        // If the count down is finished, write some text
         if (distance < 0) {
             clearInterval(x);
+            location.reload();
         }
     }, 1000);
 

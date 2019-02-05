@@ -190,7 +190,6 @@ def get_skills(refresh_token):
             skillqueue.pop(0)
 
         finish_datetime = datetime.strptime(current_skill['finish_date'], fmt)
-        start_datetime = datetime.strptime(current_skill['start_date'], fmt)
         start_sp_ = current_skill['training_start_sp']
         level_end_sp_ = current_skill['level_end_sp']
         completed_pct = (start_sp_ / level_end_sp_) * 100

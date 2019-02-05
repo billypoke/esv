@@ -41,7 +41,7 @@
                     });
 
                     $('#breakdown').find('.pull-right').each(function () {
-                        var level = parseInt($(this).html());
+                        let level = parseInt($(this).html());
                         if (!isNaN(level)) {
                             $(this).addClass('level l' + level);
                         } else {
