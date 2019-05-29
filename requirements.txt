@@ -1,5 +1,6 @@
 PyYAML
-Flask==1.0.2
+Flask
+flask-mysql
 Preston-new==4.2.0
 pyopenssl
 uwsgi

@@ -28,27 +28,41 @@
             $.ajax({
                 url: '/esv/get_skills/{{ refresh_token }}',
                 success: function (data) {
-                    $('#skills').html(data);
-                    $('#loading_div').fadeOut(400, function () {
-                        $('#skills').slideDown();
-                        $('#timings').fadeIn();
-                        $('#current_skill').fadeIn();
-                    });
+                    if (data.success) {
+                        $('#skills').html(data.payload);
+                        $('#loading_div').fadeOut(400, function () {
+                            $('#skills').slideDown();
+                            $('#timings').fadeIn();
+                            $('#current_skill').fadeIn();
+                        });
 
-                    $('.pop').popover({
-                        html: true,
-                        trigger: "hover"
-                    });
+                        $('.pop').popover({
+                            html: true,
+                            trigger: "hover"
+                        });
 
-                    $('#breakdown').find('.pull-right').each(function () {
-                        let level = parseInt($(this).html());
-                        if (!isNaN(level)) {
-                            $(this).addClass('level l' + level);
-                        } else {
-                            $(this).addClass('level notinjected');
-                            $(this).html("X")
-                        }
-                    });
+                        $('#breakdown').find('.pull-right').each(function () {
+                            let level = parseInt($(this).html());
+                            if (!isNaN(level)) {
+                                $(this).addClass('level l' + level);
+                            } else {
+                                $(this).addClass('level notinjected');
+                                $(this).html("X")
+                            }
+                        });
+                    } else {
+                        $('#messages').fadeOut(400, function () {
+                            $('#loading_div').fadeOut(400, function () {
+                                let msg = $("<div class='alert alert-danger' role='alert'>");
+                                $('#messages').html(msg.html("<p>" + data.message + "</p>")).slideDown();
+                                setTimeout(function () {
+                                    $('#messages').slideUp(400, function () {
+                                        $('#messages').html('');
+                                    });
+                                }, 3000);
+                            });
+                        });
+                    }
                 }
             });
         })

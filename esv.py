@@ -1,15 +1,25 @@
 from datetime import datetime
-from flask import Flask, render_template, flash, request, redirect, url_for
-import json
+from flask import Flask, render_template, flash, request, redirect, url_for, jsonify
+from flaskext.mysql import MySQL
 from preston_new import Preston
+
+import json
 import time
 import yaml
 
 application = Flask(__name__)
+mysql = MySQL()
 
-config = yaml.load(open('config.conf', 'r'))
+config = yaml.safe_load(open('config.conf', 'r'))
 
 application.config['SECRET_KEY'] = config['SECRET_KEY']
+
+application.config['MYSQL_DATABASE_USER'] = config['MYSQL_CONFIG']['MYSQL_DATABASE_USER']
+application.config['MYSQL_DATABASE_PASSWORD'] = config['MYSQL_CONFIG']['MYSQL_DATABASE_PASSWORD']
+application.config['MYSQL_DATABASE_DB'] = config['MYSQL_CONFIG']['MYSQL_DATABASE_DB']
+application.config['MYSQL_DATABASE_HOST'] = config['MYSQL_CONFIG']['MYSQL_DATABASE_HOST']
+
+mysql.init_app(application)
 
 
 @application.route('/')
@@ -75,8 +85,7 @@ def view_pilot(refresh_token=None):
             pilot_id = pilot_info['CharacterID']
 
     except Exception as e:
-        flash('There was an error parsing skills', 'error')
-        print('Skill Parse error: ' + str(e))
+        flash('There was an error parsing skills: ' + str(e), 'error')
         return redirect(url_for('landing'))
 
     return render_template('dist/view.html',
@@ -89,6 +98,14 @@ def view_pilot(refresh_token=None):
 
 @application.route('/esv/get_skills/<refresh_token>')
 def get_skills(refresh_token):
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+
+    except Exception as e:
+        msg = "MySQL Error"
+        return get_json_response(e, msg)
+
     try:
         t0 = time.time()
 
@@ -104,44 +121,47 @@ def get_skills(refresh_token):
         pilot_info = preston.whoami()
 
     except Exception as e:
-        print(e)
-        return "Error authenticating"
+        msg = "Authentication Error"
+        return get_json_response(e, msg)
 
     try:
         pilot_id = pilot_info['CharacterID']
-        skills = preston.get_op('get_characters_character_id_skills', character_id=pilot_id)
-        if skills.get('error') is not None:
-            msg = 'ESI error: ' + skills.get('error')
-            print(msg)
-            return msg
+        skills_response = preston.get_op('get_characters_character_id_skills', character_id=pilot_id)
 
-        skills = skills['skills']
+        skillqueue_response = preston.get_op('get_characters_character_id_skillqueue', character_id=pilot_id)
 
-        # Prepare and get names from the skill ids
-        ids_list = []
-        for skill in skills:
-            ids_list.append(skill.get('skill_id'))
-
-    except Exception as e:
-        print(e)
-        return "Error fetching skills"
-
-    try:
-
-        skill_names = preston.post_op('post_universe_names', path_data=None, post_data=ids_list)
-
-    except Exception as e:
-        print(e)
-        return "Error fetching skill_names"
-
-    try:
         t1 = time.time()
 
         network_time = t1 - t0
 
-        t0 = time.time()
+        if skills_response.get('error') is not None:
+            raise Exception('ESI error: ' + skills_response.get('error'))
 
-        skill_groups = json.load(open('static/json/skill_groups.json', 'r'))
+        skills = skills_response['skills']
+        skill_ids = [skill.get('skill_id') for skill in skills]
+
+        query = "SELECT typeID, typeName FROM invtypes WHERE invtypes.typeID IN ({})" \
+            .format(','.join(str(i) for i in skill_ids))
+        cursor.execute(query)
+        skill_names = dict(cursor.fetchall())
+
+        query = "SELECT groupName, GROUP_CONCAT(DISTINCT typeID) " \
+                "FROM invtypes " \
+                "LEFT JOIN invgroups ON invgroups.groupID = invtypes.groupID " \
+                "WHERE invtypes.groupID IN " \
+                "(SELECT groupID from invgroups where categoryID = {}) " \
+                "GROUP BY groupName".format(config['CATEGORY_SKILLS'])
+        cursor.execute(query)
+        skill_groups = dict(cursor.fetchall())
+
+        skill_groups = {skill_group: skill_ids_csv.split(',') for skill_group, skill_ids_csv in skill_groups.items()}
+
+    except Exception as e:
+        msg = "Error fetching skills"
+        return get_json_response(e, msg)
+
+    try:
+        t0 = time.time()
 
         skills_stats = {}
         skills_dict = {}
@@ -152,8 +172,9 @@ def get_skills(refresh_token):
 
         # Parse skills into dicts for the html response
         for group, child_skills in skill_groups.items():
+            child_skill_ints = [int(i) for i in child_skills]
             for skill in skills:
-                if skill['skill_id'] in child_skills:
+                if skill['skill_id'] in child_skill_ints:
                     # Prevents dict errors by setting child items to {} first
                     if group not in skills_dict:
                         skills_dict[group] = {}
@@ -163,9 +184,7 @@ def get_skills(refresh_token):
 
                     # Add skill and metadata to dicts
                     skill_id = skill['skill_id']
-                    skill_name = next(
-                        item['name'] for item in skill_names if item['id'] == skill_id
-                    )
+                    skill_name = skill_names[skill_id]
                     skill_level_trained = skill['active_skill_level']
                     skills_dict[group][skill_name] = skill_level_trained
                     skills_stats[group]['skills_in_group'] += 1
@@ -173,29 +192,27 @@ def get_skills(refresh_token):
                     skills_stats['Totals']['total_sp'] += skill['skillpoints_in_skill']
 
     except Exception as e:
-        print(e)
-        return "Error parsing skills"
+        msg = "Error parsing skills"
+        return get_json_response(e, msg)
 
     try:
-        skillqueue = preston.get_op('get_characters_character_id_skillqueue', character_id=pilot_id)
-
         utcnow = datetime.utcnow()
         fmt = '%Y-%m-%dT%H:%M:%SZ'
-        current_skill = skillqueue[0]
+        current_skill = skillqueue_response[0]
         utcnow_fmt = datetime.strftime(utcnow, fmt)
-        skill_count = len(skillqueue)
+        skill_count = len(skillqueue_response)
         while current_skill['finish_date'] < utcnow_fmt:
-            current_skill = skillqueue[1]
-            skill_count = len(skillqueue) - 1
-            skillqueue.pop(0)
+            current_skill = skillqueue_response[1]
+            skill_count = len(skillqueue_response) - 1
+            skillqueue_response.pop(0)
 
         finish_datetime = datetime.strptime(current_skill['finish_date'], fmt)
-        start_sp_ = current_skill['training_start_sp']
-        level_end_sp_ = current_skill['level_end_sp']
-        completed_pct = (start_sp_ / level_end_sp_) * 100
-        skill_name = next(
-            item['name'] for item in skill_names if item['id'] == current_skill['skill_id']
-        )
+        level_start_sp = current_skill['level_start_sp']
+        level_end_sp = current_skill['level_end_sp']
+        current_sp = next(skill.get('skillpoints_in_skill') for skill in skills if skill.get('skill_id') == current_skill['skill_id'])
+
+        completed_pct = ((current_sp - level_start_sp) / level_end_sp) * 100
+        skill_name = skill_names[current_skill['skill_id']]
         current_skill = {
             'finish_datetime': datetime.strftime(finish_datetime, '%Y-%m-%d %H:%M:%S'),
             'completed_pct': completed_pct,
@@ -204,7 +221,7 @@ def get_skills(refresh_token):
         }
 
         total_time = utcnow
-        for skill in skillqueue:
+        for skill in skillqueue_response:
             total_time += datetime.strptime(skill['finish_date'], fmt) - max(
                 datetime.strptime(skill['start_date'], fmt),
                 utcnow
@@ -217,18 +234,28 @@ def get_skills(refresh_token):
         parse_time = t1 - t0
 
     except Exception as e:
-        print(e)
-        return "Error parsing skill queue"
+        msg = "Error parsing skill queue"
+        return get_json_response(e, msg)
 
-    return render_template('dist/ajax.html',
-                           skills=skills_dict,
-                           skills_stats=skills_stats,
-                           network_time=network_time,
-                           parse_time=parse_time,
-                           base_url=config['BASE_URL'],
-                           current_skill=current_skill,
-                           skill_count=skill_count,
-                           total_time=total_time)
+    return jsonify({
+        'success': True,
+        'payload': render_template('dist/ajax.html',
+                                   skills=skills_dict,
+                                   skills_stats=skills_stats,
+                                   network_time=network_time,
+                                   parse_time=parse_time,
+                                   base_url=config['BASE_URL'],
+                                   current_skill=current_skill,
+                                   skill_count=skill_count,
+                                   total_time=total_time)
+    })
+
+
+def get_json_response(e, msg):
+    return jsonify({
+        'message': "{}: {}".format(msg, e),
+        'success': False
+    })
 
 
 if __name__ == "__main__":
