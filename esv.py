@@ -3,7 +3,6 @@ from flask import Flask, render_template, flash, request, redirect, url_for, jso
 from flaskext.mysql import MySQL
 from preston_new import Preston
 
-import json
 import time
 import yaml
 
@@ -140,16 +139,16 @@ def get_skills(refresh_token):
         skills = skills_response['skills']
         skill_ids = [skill.get('skill_id') for skill in skills]
 
-        query = "SELECT typeID, typeName FROM invtypes WHERE invtypes.typeID IN ({})" \
+        query = "SELECT typeID, typeName FROM invTypes WHERE invTypes.typeID IN ({})" \
             .format(','.join(str(i) for i in skill_ids))
         cursor.execute(query)
         skill_names = dict(cursor.fetchall())
 
         query = "SELECT groupName, GROUP_CONCAT(DISTINCT typeID) " \
-                "FROM invtypes " \
-                "LEFT JOIN invgroups ON invgroups.groupID = invtypes.groupID " \
-                "WHERE invtypes.groupID IN " \
-                "(SELECT groupID from invgroups where categoryID = {}) " \
+                "FROM invTypes " \
+                "LEFT JOIN invGroups ON invGroups.groupID = invTypes.groupID " \
+                "WHERE invTypes.groupID IN " \
+                "(SELECT groupID from invGroups where categoryID = {}) " \
                 "GROUP BY groupName".format(config['CATEGORY_SKILLS'])
         cursor.execute(query)
         skill_groups = dict(cursor.fetchall())
