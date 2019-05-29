@@ -5,3 +5,11 @@ EVE_OAUTH_CALLBACK: ''
 EVE_OAUTH_SCOPE: 'publicData esi-skills.read_skills.v1'
 
 SECRET_KEY: ''
+
+CATEGORY_SKILLS: 16
+
+MYSQL_CONFIG:
+    MYSQL_DATABASE_USER: user
+    MYSQL_DATABASE_PASSWORD: supa_secret
+    MYSQL_DATABASE_DB: eve_db
+    MYSQL_DATABASE_HOST: localhost
