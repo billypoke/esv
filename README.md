@@ -19,7 +19,7 @@ Python 3.x is required.
 3. Go to https://developers.eveonline.com/ and create a new application
 4. Choose a name and write a description
 5. For 'Connection Type', choose `Authentication & API Access`
-6. The required scopes are listed in `config.conf.default` but are `publicData` & `esi-skills.read_skills.v1`
+6. The required scopes are listed in `config.conf.default` but are `publicData`, `esi-skills.read_skills.v1`, `esi-skills.read_skillqueue.v1`, and `esi-clones.read_implants.v1`
 7. The Callback URL is where the SSO system will redirect your users after authentication. It should end in 
 `/esv/view` for this application
 8. Copy the information for your app into `config.conf`

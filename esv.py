@@ -118,23 +118,27 @@ def get_skills(refresh_token):
         )
 
         pilot_info = preston.whoami()
+        character_id = pilot_info['CharacterID']
 
     except Exception as e:
         msg = "Authentication Error"
         return get_json_response(e, msg)
 
     try:
-        pilot_id = pilot_info['CharacterID']
-        skills_response = preston.get_op('get_characters_character_id_skills', character_id=pilot_id)
+        # First, hit ESI for all the info we need
+        skills_response = preston.get_op('get_characters_character_id_skills', character_id=character_id)
 
-        skillqueue_response = preston.get_op('get_characters_character_id_skillqueue', character_id=pilot_id)
+        skillqueue_response = preston.get_op('get_characters_character_id_skillqueue', character_id=character_id)
+
+        implants_response = preston.get_op('get_characters_character_id_implants', character_id=character_id)
+
+        attributes_response = preston.get_op('get_characters_character_id_attributes', character_id=character_id)
 
         t1 = time.time()
 
         network_time = t1 - t0
 
-        if skills_response.get('error') is not None:
-            raise Exception('ESI error: ' + skills_response.get('error'))
+        t0 = time.time()
 
         skills = skills_response['skills']
         skill_ids = [skill.get('skill_id') for skill in skills]
@@ -154,6 +158,29 @@ def get_skills(refresh_token):
         skill_groups = dict(cursor.fetchall())
 
         skill_groups = {skill_group: skill_ids_csv.split(',') for skill_group, skill_ids_csv in skill_groups.items()}
+
+        for implant_id in implants_response:
+            # For each of the implants installed, we need to bump our character's attributes to figure out the SP/hour
+            query = "SELECT invTypes.typeID, " \
+                    "dgmTypeAttributes.attributeID, " \
+                    "dgmTypeAttributes.valueInt, " \
+                    "dgmAttributeTypes.attributeName " \
+                    "FROM invtypes " \
+                    "LEFT JOIN dgmtypeattributes ON invtypes.typeID = dgmtypeattributes.typeID " \
+                    "LEFT JOIN dgmAttributeTypes ON dgmAttributeTypes.attributeID = dgmTypeAttributes.attributeID " \
+                    "WHERE dgmTypeAttributes.attributeID BETWEEN 175 AND 179 " \
+                    "AND invtypes.typeID = {}".format(implant_id)
+            cursor.execute(query)
+            attribute_modifiers = cursor.fetchall()
+            for attribute in attribute_modifiers:
+                attribute_key = attribute[3][:-5]  # Chop off the Bonus
+                attributes_response[attribute_key] += attribute[2]
+
+
+
+        t1 = time.time()
+
+        query_time = t1 - t0
 
     except Exception as e:
         msg = "Error fetching skills"
@@ -195,38 +222,44 @@ def get_skills(refresh_token):
         return get_json_response(e, msg)
 
     try:
-        utcnow = datetime.utcnow()
-        fmt = '%Y-%m-%dT%H:%M:%SZ'
-        current_skill = skillqueue_response[0]
-        utcnow_fmt = datetime.strftime(utcnow, fmt)
         skill_count = len(skillqueue_response)
-        while current_skill['finish_date'] < utcnow_fmt:
-            current_skill = skillqueue_response[1]
-            skill_count = len(skillqueue_response) - 1
-            skillqueue_response.pop(0)
+        current_skill_fmt = {}
+        total_time = utcnow = datetime.utcnow()
+        if skill_count > 0:
+            fmt = '%Y-%m-%dT%H:%M:%SZ'
+            current_skill = skillqueue_response[0]
+            utcnow_fmt = datetime.strftime(utcnow, fmt)
 
-        finish_datetime = datetime.strptime(current_skill['finish_date'], fmt)
-        level_start_sp = current_skill['level_start_sp']
-        level_end_sp = current_skill['level_end_sp']
-        current_sp = next(skill.get('skillpoints_in_skill') for skill in skills if skill.get('skill_id') == current_skill['skill_id'])
+            level_start_sp = current_skill['level_start_sp']
+            level_end_sp = current_skill['level_end_sp']
+            training_start_sp = current_skill['training_start_sp']
 
-        completed_pct = ((current_sp - level_start_sp) / level_end_sp) * 100
-        skill_name = skill_names[current_skill['skill_id']]
-        current_skill = {
-            'finish_datetime': datetime.strftime(finish_datetime, '%Y-%m-%d %H:%M:%S'),
-            'completed_pct': completed_pct,
-            'skill_name': skill_name,
-            'skill_level': current_skill['finished_level']
-        }
+            completed_pct = ((training_start_sp - level_start_sp) / (level_end_sp - level_start_sp)) * 100
 
-        total_time = utcnow
-        for skill in skillqueue_response:
-            total_time += datetime.strptime(skill['finish_date'], fmt) - max(
-                datetime.strptime(skill['start_date'], fmt),
-                utcnow
-            )
+            if current_skill['finish_date']:
+                while current_skill['finish_date'] < utcnow_fmt:
+                    current_skill = skillqueue_response[1]
+                    skill_count = len(skillqueue_response) - 1
+                    skillqueue_response.pop(0)
 
-        total_time = str(total_time).split('.')[0]
+                finish_datetime = datetime.strptime(current_skill['finish_date'], fmt)
+                start_datetime = datetime.strptime(current_skill['start_date'], fmt)
+                current_skill_fmt['finish_datetime'] = datetime.strftime(finish_datetime, '%Y-%m-%d %H:%M:%S')
+                completed_pct = (utcnow - start_datetime) / (finish_datetime - start_datetime) * 100
+                sp_per_hour = (level_end_sp - level_start_sp) / (finish_datetime - start_datetime).total_seconds() / 3600
+
+            skill_name = skill_names[current_skill['skill_id']]
+            current_skill_fmt['completed_pct'] = completed_pct
+            current_skill_fmt['skill_name'] = skill_name
+            current_skill_fmt['skill_level'] = current_skill['finished_level']
+
+            for skill in skillqueue_response:
+                total_time += datetime.strptime(skill['finish_date'], fmt) - max(
+                    datetime.strptime(skill['start_date'], fmt),
+                    utcnow
+                )
+
+            total_time = str(total_time).split('.')[0]
 
         t1 = time.time()
 
@@ -244,7 +277,7 @@ def get_skills(refresh_token):
                                    network_time=network_time,
                                    parse_time=parse_time,
                                    base_url=config['BASE_URL'],
-                                   current_skill=current_skill,
+                                   current_skill=current_skill_fmt,
                                    skill_count=skill_count,
                                    total_time=total_time)
     })
